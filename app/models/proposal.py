@@ -1,7 +1,8 @@
 from app import db
+from base import BaseModel
 
 
-class Proposal(db.Model):
+class Proposal(db.Model, BaseModel):
     __tablename__ = 'proposal'
 
     id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)

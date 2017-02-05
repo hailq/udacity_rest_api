@@ -1,10 +1,15 @@
+import os
+import json
+
 from flask import Flask, render_template, g, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
+from flask_httpauth import HTTPBasicAuth
 from redis import Redis
-from flask.ext.httpauth import HTTPBasicAuth
+
+from config import configuration
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///meetneat.db'
+app.config.from_object(configuration)
 
 db = SQLAlchemy(app)
 redis = Redis()
@@ -64,3 +69,16 @@ def hello_world():
 @app.route('/clientOAuth')
 def start():
     return render_template('clientOAuth.html')
+
+
+@app.route('/doc')
+def doc():
+    return render_template('doc.html')
+
+
+@app.route('/api.json')
+def doc_json():
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "api.json")
+    json_data = json.load(open(json_url))
+    return jsonify(json_data)

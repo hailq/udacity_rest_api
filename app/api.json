@@ -1,0 +1,206 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Udacity Restful API",
+        "description": "This is a sample restful api.",
+        "version": "1.0"
+    },
+    "host": "localhost:5000",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/api/v1",
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "summary": "User information",
+                "description": "The Users endpoint returns information about the *User*.\n",
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of users",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "New user",
+                "description": "The Users endpoint create a new *User*.\n",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "type": "string",
+                        "required": true,
+                        "description": "Username & password of the user"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created user",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete user",
+                "description": "The Users endpoint delete a new *User*.\n",
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete response"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "summary": "User information",
+                "description": "The Users endpoint returns information about a specific *User*.\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of the user",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A specific user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier representing a specific user."
+                },
+                "username": {
+                    "type": "string",
+                    "description": "Username of the user."
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email of the user."
+                },
+                "picture": {
+                    "type": "string",
+                    "description": "Profile image URL."
+                },
+                "requests": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Request"
+                    }
+                }
+            }
+        },
+        "Request": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier representing a specific request"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "Owner of the request"
+                },
+                "meal_type": {
+                    "type": "string",
+                    "description": "Type of the meal"
+                },
+                "meal_time": {
+                    "type": "string",
+                    "description": "Time at which the meal begin"
+                },
+                "location_string": {
+                    "type": "string",
+                    "description": "Place of the restaurant"
+                },
+                "latitude": {
+                    "type": "string",
+                    "description": "Latitude of the restaurant"
+                },
+                "longitude": {
+                    "type": "string",
+                    "description": "Logitude of the restaurant"
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,7 +1,8 @@
 from app import db
+from base import BaseModel
 
 
-class MealDate(db.Model):
+class MealDate(db.Model, BaseModel):
     __tablename__ = 'mealdate'
 
     id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)

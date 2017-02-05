@@ -16,9 +16,9 @@ def get_user():
 @auth.login_required
 @ratelimit(limit=180, per=60, scope_func=lambda: g.user.id)
 def get_one_user(id):
-    user = User.query.filter_by(id=id).one()
+    user = User.query.filter_by(id=id).first()
     if not user:
-        abort(400)
+        return jsonify({'status': 'Not found', 'message': 'User doest not exist'}), 404
     return jsonify({'status': 'OK', 'data': user.serialize})
 
 
@@ -50,7 +50,7 @@ def put_user():
 
     db.session.commit()
 
-    return jsonify({'status': 'OK', 'message': 'User updated successfully'}), 200
+    return jsonify({'status': 'OK', 'message': 'User updated successfully', 'data': user.serialize}), 200
 
 
 @app.route('/api/v1/users', methods=['DELETE'])
@@ -89,5 +89,10 @@ def create_new_user():
     db.session.add(user)
     db.session.commit()
     return jsonify({
-        'username': user.username
+        'status': 'OK',
+        'message': 'New user created successfully',
+        'data': {
+            'id': user.id,
+            'username': user.username
+        }
     }), 201

@@ -1,5 +1,5 @@
 from app import db
-from app.models.request import Request
+from base import BaseModel
 
 from passlib.apps import custom_app_context as pwd_context
 import random, string
@@ -8,7 +8,7 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
 
 
-class User(db.Model):
+class User(db.Model, BaseModel):
     __tablename__ = 'user'
 
     id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
@@ -35,6 +35,7 @@ class User(db.Model):
             'id': self.id,
             'username': self.username,
             'email': self.email,
+            'picture': self.picture,
             'requests': [i.serialize for i in self.requests]
         }
 

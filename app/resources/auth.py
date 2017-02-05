@@ -1,4 +1,4 @@
-from app import app, db
+from app import app, db, auth
 from app.models.user import User
 
 from oauth2client.client import flow_from_clientsecrets
@@ -9,7 +9,14 @@ import json
 
 from app.utils.rate_limit import ratelimit
 
-from flask import request, make_response, jsonify
+from flask import request, make_response, jsonify, g
+
+
+@app.route('/api/v1/token', methods=['GET'])
+@auth.login_required
+def get_token():
+    token = g.user.generate_auth_token()
+    return jsonify({'token': token.decode('ascii')})
 
 
 @app.route('/api/v1/<provider>/login', methods=['POST'])
